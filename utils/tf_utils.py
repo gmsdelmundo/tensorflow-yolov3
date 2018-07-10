@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.contrib import slim
 
 
+@tf.contrib.framework.add_arg_scope
 def fixed_padding(inputs, kernel_size):
     """Pad the input along the spatial dimensions, independent of input size.
     Reference: https://github.com/tensorflow/models/blob/master/official/resnet/resnet_model.py
