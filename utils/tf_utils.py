@@ -3,21 +3,25 @@ from tensorflow.contrib import slim
 
 
 @tf.contrib.framework.add_arg_scope
-def fixed_padding(inputs, kernel_size):
+def fixed_padding(inputs, kernel_size, mode='CONSTANT', **kwargs):
     """Pad the input along the spatial dimensions, independent of input size.
     Reference: https://github.com/tensorflow/models/blob/master/official/resnet/resnet_model.py
 
     :param inputs: A tensor of size [batch, channels, height, width] or [batch, height, width, channels].
-    :param kernel_size: the convolution kernel size.
+    :param kernel_size: The convolution kernel size.
+    :param mode: The type of padding to do.
     :return: A tensor of size [batch, height + kernel_size - 1, width + kernel_size - 1, channels].
     """
     pad_total = kernel_size - 1
     pad_beg = pad_total//2
     pad_end = pad_total - pad_beg
 
-    padding = [[0, 0], [pad_beg, pad_end], [pad_beg, pad_end], [0, 0]]
+    if kwargs['data_format'] == 'NCHW':
+        padding = [[0, 0], [0, 0], [pad_beg, pad_end], [pad_beg, pad_end]]
+    else:
+        padding = [[0, 0], [pad_beg, pad_end], [pad_beg, pad_end], [0, 0]]
 
-    padded_inputs = tf.pad(inputs, padding)
+    padded_inputs = tf.pad(inputs, padding, mode=mode)
     return padded_inputs
 
 
