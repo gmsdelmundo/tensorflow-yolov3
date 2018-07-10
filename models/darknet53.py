@@ -6,6 +6,7 @@ class Darknet53:
 
     Reference: https://pjreddie.com/darknet/
     """
+
     @staticmethod
     def _block(inputs, filters):
         """A convolution block.
