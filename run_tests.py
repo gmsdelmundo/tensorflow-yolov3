@@ -3,6 +3,7 @@ from tensorflow.contrib import slim
 
 from tests.darknet53_test import Darknet53Test
 from tests.tf_utils_test import TFUtilsTest
+from tests.yolov3_test import YOLOv3Test
 from utils import tf_utils
 from utils.config import config
 
@@ -22,6 +23,7 @@ with slim.arg_scope([slim.conv2d],
     with slim.arg_scope([slim.batch_norm, slim.conv2d, tf_utils.fixed_padding], reuse=REUSE):
         Darknet53Test()
         TFUtilsTest()
+        YOLOv3Test()
 
 if __name__ == '__main__':
     tf.test.main()
