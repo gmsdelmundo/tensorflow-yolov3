@@ -67,7 +67,8 @@ class YOLOv3:
         :return: The predicted, de-normalised bounding boxes.
         """
         num_anchors = len(anchors)
-        predictions = slim.conv2d(inputs, num_anchors*(5 + self.NUM_CLASSES), 1, stride=1, activation_fn=None)
+        predictions = slim.conv2d(inputs, num_anchors*(5 + self.NUM_CLASSES), 1, stride=1, normalizer_fn=None,
+                                  activation_fn=None, biases_initializer=tf.zeros_initializer())
 
         grid_size = self._get_grid_size(predictions)
         dim = grid_size[0]*grid_size[1]
@@ -135,6 +136,7 @@ class YOLOv3:
         # Convert back to NCHW format
         if self.DATA_FORMAT == 'NCHW':
             outputs = tf.transpose(outputs, [0, 3, 1, 2])
+        outputs = tf.identity(outputs, name='upsampled')
         return outputs
 
     def build_model(self):

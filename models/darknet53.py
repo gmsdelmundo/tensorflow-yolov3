@@ -43,13 +43,13 @@ class Darknet53:
         for _ in range(8):
             outputs = Darknet53._block(outputs, 128)
 
-        route2 = outputs
+        route1 = outputs
         outputs = tf_utils.conv2d_fixed_padding(outputs, 512, 3, strides=2)
 
         for _ in range(8):
             outputs = Darknet53._block(outputs, 256)
 
-        route1 = outputs
+        route2 = outputs
         outputs = tf_utils.conv2d_fixed_padding(outputs, 1024, 3, strides=2)
 
         for _ in range(4):
