@@ -28,7 +28,7 @@ class YOLOv3:
         self.DATA_FORMAT = config.DATA_FORMAT
 
         self.inputs = tf.placeholder(tf.float32, [None, self.IMAGE_SIZE, self.IMAGE_SIZE, 3], name='inputs')
-        self.build_model()
+        self.outputs = self.build_model()
 
     def _block(self, inputs, filters):
         """A convolution block.
@@ -185,5 +185,5 @@ class YOLOv3:
                     detect3 = self._detection_layer(outputs, self.ANCHORS[:3])
                     detect3 = tf.identity(detect3, name='detect3')
 
-                    self.detections = tf.concat([detect1, detect2, detect3], axis=1, name='outputs')
-                    return self.detections
+                    detections = tf.concat([detect1, detect2, detect3], axis=1, name='outputs')
+                    return detections
