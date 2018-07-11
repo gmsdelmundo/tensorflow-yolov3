@@ -14,18 +14,18 @@ class YOLOv3:
     def __init__(self, config):
         """The YOLOv3 constructor.
 
-        :param config: The configuration object.
+        :param config: The configuration dictionary.
         """
-        self.BATCH_NORM_DECAY = config.BATCH_NORM_DECAY
-        self.BATCH_NORM_EPSILON = config.BATCH_NORM_EPSILON
-        self.LEAKY_RELU = config.LEAKY_RELU
+        self.BATCH_NORM_DECAY = config['BATCH_NORM_DECAY']
+        self.BATCH_NORM_EPSILON = config['BATCH_NORM_EPSILON']
+        self.LEAKY_RELU = config['LEAKY_RELU']
 
-        self.ANCHORS = config.ANCHORS
+        self.ANCHORS = config['ANCHORS']
+        self.IMAGE_SIZE = config['IMAGE_SIZE']
+        self.NUM_CLASSES = config['NUM_CLASSES']
 
-        self.IMAGE_SIZE = config.IMAGE_SIZE
-        self.NUM_CLASSES = config.NUM_CLASSES
-        self.REUSE = config.REUSE
-        self.DATA_FORMAT = config.DATA_FORMAT
+        self.REUSE = config['REUSE']
+        self.DATA_FORMAT = config['DATA_FORMAT']
 
         self.inputs = tf.placeholder(tf.float32, [None, self.IMAGE_SIZE, self.IMAGE_SIZE, 3], name='inputs')
         self.outputs = self.build_model()

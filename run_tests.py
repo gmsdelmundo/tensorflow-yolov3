@@ -4,15 +4,15 @@ from tensorflow.contrib import slim
 from tests.darknet53_test import Darknet53Test
 from tests.tf_utils_test import TFUtilsTest
 from utils import tf_utils
-from utils.config import Config
+from utils.config import config
 
-normalizer_params = {'decay': Config.BATCH_NORM_DECAY,
-                     'epsilon': Config.BATCH_NORM_EPSILON,
+normalizer_params = {'decay': config['BATCH_NORM_DECAY'],
+                     'epsilon': config['BATCH_NORM_EPSILON'],
                      'scale': True,
                      'is_training': True,
                      'fused': None}
-LEAKY_RELU = Config.LEAKY_RELU
-REUSE = Config.REUSE
+LEAKY_RELU = config['LEAKY_RELU']
+REUSE = config['REUSE']
 
 with slim.arg_scope([slim.conv2d],
                     normalizer_fn=slim.batch_norm,
