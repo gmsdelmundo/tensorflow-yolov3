@@ -4,9 +4,9 @@ A TensorFlow implementation of YOLOv3.
 
 Reference: [YOLOv3: An Incremental Improvement](https://pjreddie.com/media/files/papers/YOLOv3.pdf)
 
-# Development Setup
+# Development Environment
 
-This was developed with the following setup:
+This was developed with the following environment:
 
 * Ubuntu 16.04
 * CUDA Toolkit 9.0
@@ -15,7 +15,7 @@ This was developed with the following setup:
 * Python 3.5
 * All Python packages listed in ```requirements.txt```
 
-# Setup
+# Setup Guide
 
 The following assumes that you have already set up a virtual environment for Python 3.5. Also, the ```setup.sh``` script has only been tested on Ubuntu 16.04, and not other operating systems.
 
