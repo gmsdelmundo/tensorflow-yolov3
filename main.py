@@ -84,12 +84,19 @@ with tf.Session() as sess:
 
         for class_id, v in filtered_boxes.items():
             for detection in v:
-                x1, y1, x2, y2 = detection['box']
+                box = detection['box']
 
-                cv2.rectangle(resized_image, (x1, y1), (x2, y2), colours[class_id], 2)
-                cv2.putText(resized_image, classes[class_id], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1,
+                original_size = np.array(image.shape[:2][::-1])
+                resized_size = np.array([config['IMAGE_SIZE'], config['IMAGE_SIZE']])
+                ratio = original_size / resized_size
+                box = box.reshape(2, 2) * ratio
+                box = list(box.reshape(-1))
+                x1, y1, x2, y2 = [int(z) for z in box]
+
+                cv2.rectangle(image, (x1, y1), (x2, y2), colours[class_id], 2)
+                cv2.putText(image, classes[class_id], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1,
                             cv2.LINE_AA)
 
         print("Done")
-        cv2.imshow('Result', resized_image)
+        cv2.imshow('Result', image)
         cv2.waitKey(0)
