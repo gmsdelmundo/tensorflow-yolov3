@@ -1,3 +1,5 @@
+import argparse
+
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -6,6 +8,10 @@ from models.yolov3 import YOLOv3
 from utils import postprocessing
 from config.config import config
 from utils.load_yolov3_weights import load_yolov3_weights
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('input', help='Input image/video.')
+args = parser.parse_args()
 
 with tf.variable_scope('model'):
     print("Constructing computational graph...")
@@ -20,43 +26,70 @@ with tf.variable_scope('model'):
 
 print("Loading class names...")
 classes = []
+colours = {}
 f = open(config['CLASS_PATH'], 'r').read().splitlines()
-for line in f:
+for i, line in enumerate(f):
     classes.append(line)
+    colours[i] = tuple([int(z) for z in np.random.uniform(0, 255, size=3)])
 print(classes)
 print("Done")
 print("=============================================")
 
 print("Running YOLOv3...")
-boxes = postprocessing.detections_to_bboxes(model.outputs)
-
-image = cv2.imread('000000532481.jpg')
-image_resized = cv2.resize(image, (config['IMAGE_SIZE'], config['IMAGE_SIZE']))
-
 with tf.Session() as sess:
     sess.run(assign_ops)
-    detected_boxes = sess.run(boxes, feed_dict={model.inputs: np.expand_dims(image_resized, axis=0)})
-print("Done")
-print("=============================================")
+    boxes = postprocessing.detections_to_bboxes(model.outputs)
 
-print("Doing postprocessing...")
-filtered_boxes = postprocessing.nms(detected_boxes, conf_thresh=config['CONF_THRESH'], iou_thresh=config['IOU_THRESH'])
+    if args.input[-4:] == '.mp4' or args.input[-4:] == '.avi':
+        video = cv2.VideoCapture(args.input)
 
-print(filtered_boxes)
+        while video.isOpened():
+            ret, frame = video.read()
+            if ret is not True:
+                video.release()
+                break
 
-for k, v in filtered_boxes.items():
-    print(classes[k], v)
+            resized_frame = cv2.resize(frame, (config['IMAGE_SIZE'], config['IMAGE_SIZE']))
 
-    colour = tuple([int(z) for z in np.random.uniform(0, 255, size=3)])
+            detected_boxes = sess.run(boxes, feed_dict={model.inputs: np.expand_dims(resized_frame, axis=0)})
+            filtered_boxes = postprocessing.nms(detected_boxes, conf_thresh=config['CONF_THRESH'],
+                                                iou_thresh=config['IOU_THRESH'])
 
-    for detection in v:
-        x1, y1, x2, y2 = detection['box'].reshape(2, 2).reshape(-1)
+            for class_id, v in filtered_boxes.items():
+                for detection in v:
+                    box = detection['box']
 
-        cv2.rectangle(image_resized, (x1, y1), (x2, y2), colour, 2)
-        cv2.putText(image_resized, classes[k], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
+                    original_size = np.array(frame.shape[:2][::-1])
+                    resized_size = np.array([config['IMAGE_SIZE'], config['IMAGE_SIZE']])
+                    ratio = original_size/resized_size
+                    box = box.reshape(2, 2)*ratio
+                    box = list(box.reshape(-1))
+                    x1, y1, x2, y2 = [int(z) for z in box]
 
-print("Done")
-print("=============================================")
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), colours[class_id], 2)
+                    cv2.putText(frame, classes[class_id], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1,
+                                cv2.LINE_AA)
 
-cv2.imshow('Result', image_resized)
-cv2.waitKey(0)
+            cv2.imshow('Result', frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                video.release()
+                break
+        print("Done")
+    else:
+        image = cv2.imread(args.input)
+        resized_image = cv2.resize(image, (config['IMAGE_SIZE'], config['IMAGE_SIZE']))
+        detected_boxes = sess.run(boxes, feed_dict={model.inputs: np.expand_dims(resized_image, axis=0)})
+        filtered_boxes = postprocessing.nms(detected_boxes, conf_thresh=config['CONF_THRESH'],
+                                            iou_thresh=config['IOU_THRESH'])
+
+        for class_id, v in filtered_boxes.items():
+            for detection in v:
+                x1, y1, x2, y2 = detection['box']
+
+                cv2.rectangle(resized_image, (x1, y1), (x2, y2), colours[class_id], 2)
+                cv2.putText(resized_image, classes[class_id], (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1,
+                            cv2.LINE_AA)
+
+        print("Done")
+        cv2.imshow('Result', resized_image)
+        cv2.waitKey(0)

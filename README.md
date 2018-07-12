@@ -36,6 +36,12 @@ Then, run ```./setup.sh```.
 
 # Usage
 
+To run YOLOv3, type the following in the terminal:
+
+```bash
+python main.py <path_to_image_or_video>
+```
+
 To run the test cases, type the following in the terminal:
 
 ```bash
