@@ -1,6 +1,8 @@
 *.swp
 *.weights
+.coverage
 .idea/
 .vscode/
 __pycache__/
 data/
+htmlcov/

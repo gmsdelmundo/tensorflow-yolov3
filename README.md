@@ -1,7 +1,7 @@
 # YOLOv3
 
 [![Build Status](https://travis-ci.com/MiG98789/tensorflow-yolov3.svg?token=DKYFe4kV8zgXJqGbT7PL&branch=master)](https://travis-ci.com/MiG98789/tensorflow-yolov3)
-
+[![codecov](https://codecov.io/gh/MiG98789/tensorflow-yolov3/branch/master/graph/badge.svg)](https://codecov.io/gh/MiG98789/tensorflow-yolov3)
 
 A TensorFlow implementation of YOLOv3.
 

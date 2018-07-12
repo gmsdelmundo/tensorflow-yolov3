@@ -1,3 +1,4 @@
+coverage==4.5.1
 opencv-python==3.4.1.15
 tensorflow-gpu==1.8.0
 tqdm==4.23.4

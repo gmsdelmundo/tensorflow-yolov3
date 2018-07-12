@@ -43,7 +43,3 @@ class TFUtilsTest(BaseTest, tf.test.TestCase):
             outputs = tf_utils.conv2d_fixed_padding(self.nchw_inputs, 256, 3)
 
             self.assertAllEqual(outputs.shape, [1, 256, 418, 418])
-
-
-if __name__ == '__main__':
-    tf.test.main()

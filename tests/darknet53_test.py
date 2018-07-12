@@ -30,7 +30,3 @@ class Darknet53Test(BaseTest, tf.test.TestCase):
                 self.assertAllEqual(route1.shape, [1, 256, 53, 53])
                 self.assertAllEqual(route2.shape, [1, 512, 27, 27])
                 self.assertAllEqual(outputs.shape, [1, 1024, 14, 14])
-
-
-if __name__ == '__main__':
-    tf.test.main()
