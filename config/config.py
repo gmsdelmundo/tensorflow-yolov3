@@ -13,5 +13,9 @@ config = {
     'REUSE': False,
     'DATA_FORMAT': 'NCHW',  # NCHW for GPU, NHWC for CPU
 
-    'WEIGHTS_PATH': os.path.join('weights', 'yolov3.weights')
+    'CLASS_PATH': os.path.join('config', 'coco.names'),
+    'WEIGHTS_PATH': os.path.join('config', 'yolov3.weights'),
+
+    'CONF_THRESH': 0.5,
+    'IOU_THRESH': 0.4
 }

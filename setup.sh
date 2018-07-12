@@ -8,6 +8,5 @@ fi
 pip install -r requirements.txt
 
 # Get the official YOLOv3 weights
-mkdir weights
-cd weights
+cd config
 wget https://pjreddie.com/media/files/yolov3.weights

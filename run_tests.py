@@ -5,7 +5,7 @@ from tests.darknet53_test import Darknet53Test
 from tests.tf_utils_test import TFUtilsTest
 from tests.yolov3_test import YOLOv3Test
 from utils import tf_utils
-from utils.config import config
+from config.config import config
 
 normalizer_params = {'decay': config['BATCH_NORM_DECAY'],
                      'epsilon': config['BATCH_NORM_EPSILON'],

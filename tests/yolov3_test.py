@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from models.yolov3 import YOLOv3
 from tests.base_test import BaseTest
-from utils.config import config
+from config.config import config
 
 
 class YOLOv3Test(BaseTest, tf.test.TestCase):
@@ -11,6 +11,7 @@ class YOLOv3Test(BaseTest, tf.test.TestCase):
 
     def test_yolov3_num_params(self):
         """Test to see if the number of parameters in YOLOv3 is 62001757."""
+        print("test_yolov3_num_params")
         with tf.variable_scope('model'):
             _ = YOLOv3(config)
         global_vars = tf.global_variables(scope='model')
