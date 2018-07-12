@@ -81,7 +81,7 @@ def nms(bboxes, conf_thresh, iou_thresh=0.4):
                 score = cls_scores[0]
                 if not cls in result:
                     result[cls] = []
-                result[cls].append({'box': box, 'score': score})
+                result[cls].append({'bbox': box, 'score': score})
                 cls_boxes = cls_boxes[1:]
                 ious = np.array([get_iou(box, x) for x in cls_boxes])
                 iou_mask = ious < iou_thresh

@@ -47,3 +47,9 @@ To run the test cases, type the following in the terminal:
 ```bash
 python run_tests.py
 ```
+
+# Results
+
+![result_airport.png](media_files/result_airport.png)
+
+![result_street.png](media_files/result_street.png)
