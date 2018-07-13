@@ -12,6 +12,7 @@ from utils.load_yolov3_weights import load_yolov3_weights
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('input', help='Input image/video.')
+parser.add_argument('-c', '--classes', nargs='+', help='Predict the specific class only.')
 args = parser.parse_args()
 
 with tf.variable_scope('model'):
@@ -101,7 +102,8 @@ with tf.Session() as sess:
 
             for class_id, v in filtered_bboxes.items():
                 for detection in v:
-                    label_bboxes(frame, detection['bbox'], class_id, detection['score'])
+                    if args.classes is None or classes[class_id] in args.classes:
+                        label_bboxes(frame, detection['bbox'], class_id, detection['score'])
 
             pbar.update(1)
             cv2.imshow('Result', frame)
@@ -118,7 +120,8 @@ with tf.Session() as sess:
 
         for class_id, v in filtered_bboxes.items():
             for detection in v:
-                label_bboxes(frame, detection['bbox'], class_id, detection['score'])
+                if args.classes is None or classes[class_id] in args.classes:
+                    label_bboxes(frame, detection['bbox'], class_id, detection['score'])
 
         print("Done")
         cv2.imshow('Result', frame)
