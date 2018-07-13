@@ -1,17 +1,15 @@
 import tensorflow as tf
 from tensorflow.contrib import slim
 
-from tests.base_test import BaseTest
+from tests import BaseTest
 from utils import tf_utils
 
 
-class TFUtilsTest(BaseTest, tf.test.TestCase):
+class TestTFUtils(BaseTest, tf.test.TestCase):
     """Test class for all TensorFlow helper functions."""
 
     def test_fixed_padding_NHWC(self):
         """Test fixed_padding for an input tensor with NHWC data format."""
-        print("test_fixed_padding_NHWC")
-
         with slim.arg_scope([slim.batch_norm, slim.conv2d, tf_utils.fixed_padding], data_format='NHWC'):
             outputs = tf_utils.fixed_padding(self.nhwc_inputs, 3)
 
@@ -19,8 +17,6 @@ class TFUtilsTest(BaseTest, tf.test.TestCase):
 
     def test_fixed_padding_NCHW(self):
         """Test fixed_padding for an input tensor with NCHW data format."""
-        print("test_fixed_padding_NCHW")
-
         with slim.arg_scope([slim.batch_norm, slim.conv2d, tf_utils.fixed_padding], data_format='NCHW'):
             outputs = tf_utils.fixed_padding(self.nchw_inputs, 3)
 
@@ -28,8 +24,6 @@ class TFUtilsTest(BaseTest, tf.test.TestCase):
 
     def test_conv2d_fixed_padding_NHWC(self):
         """Test conv2d_fixed_padding for an input tensor with NHWC data format."""
-        print("test_conv2d_fixed_padding_NHWC")
-
         with slim.arg_scope([slim.batch_norm, slim.conv2d, tf_utils.fixed_padding], data_format='NHWC'):
             outputs = tf_utils.conv2d_fixed_padding(self.nhwc_inputs, 256, 3)
 
@@ -37,8 +31,6 @@ class TFUtilsTest(BaseTest, tf.test.TestCase):
 
     def test_conv2d_fixed_padding_NCHW(self):
         """Test conv2d_fixed_padding for an input tensor with NCHW data format."""
-        print("test_conv2d_fixed_padding_NCHW")
-
         with slim.arg_scope([slim.batch_norm, slim.conv2d, tf_utils.fixed_padding], data_format='NCHW'):
             outputs = tf_utils.conv2d_fixed_padding(self.nchw_inputs, 256, 3)
 

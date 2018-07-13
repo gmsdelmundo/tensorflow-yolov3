@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow.contrib import slim
 
-from models.darknet53 import Darknet53
+from models import Darknet53
 from utils import postprocessing
 from utils import tf_utils
 

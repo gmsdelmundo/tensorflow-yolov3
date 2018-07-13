@@ -46,7 +46,7 @@ def get_iou(box1, box2):
 
 
 def nms(bboxes, conf_thresh, iou_thresh=0.4):
-    """Apply non-maximum suppresion on the bounding boxes.
+    """Apply non-maximum suppression on the bounding boxes.
 
     :param bboxes: The predicted bounding boxes.
     :param conf_thresh: The threshold to decide whether a predicted bounding box is an object.

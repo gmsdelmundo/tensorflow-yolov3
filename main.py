@@ -5,9 +5,9 @@ import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
 
-from models.yolov3 import YOLOv3
+from models import YOLOv3
 from utils import postprocessing
-from config.config import config
+from config import config
 from utils.load_yolov3_weights import load_yolov3_weights
 
 parser = argparse.ArgumentParser(description=__doc__)
