@@ -187,5 +187,5 @@ class YOLOv3:
                     detect3 = self._detection_layer(outputs, self.ANCHORS[:3])
                     detect3 = tf.identity(detect3, name='detect3')
 
-                    detections = tf.concat([detect1, detect2, detect3], axis=1, name='outputs')
-                    return detections
+                detections = tf.concat([detect1, detect2, detect3], axis=1, name='outputs')
+                return detections
