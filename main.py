@@ -101,8 +101,8 @@ with tf.Session() as sess:
                                                  iou_thresh=config['IOU_THRESH'])
 
             for class_id, v in filtered_bboxes.items():
-                for detection in v:
-                    if args.classes is None or classes[class_id] in args.classes:
+                if args.classes is None or classes[class_id] in args.classes:
+                    for detection in v:
                         label_bboxes(frame, detection['bbox'], class_id, detection['score'])
 
             pbar.update(1)
@@ -119,8 +119,8 @@ with tf.Session() as sess:
                                              iou_thresh=config['IOU_THRESH'])
 
         for class_id, v in filtered_bboxes.items():
-            for detection in v:
-                if args.classes is None or classes[class_id] in args.classes:
+            if args.classes is None or classes[class_id] in args.classes:
+                for detection in v:
                     label_bboxes(frame, detection['bbox'], class_id, detection['score'])
 
         print("Done")
