@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.contrib import slim
 
 from models.darknet53 import Darknet53
+from utils import postprocessing
 from utils import tf_utils
 
 
@@ -28,7 +29,8 @@ class YOLOv3:
         self.DATA_FORMAT = config['DATA_FORMAT']
 
         self.inputs = tf.placeholder(tf.float32, [None, self.IMAGE_SIZE, self.IMAGE_SIZE, 3], name='inputs')
-        self.outputs = self.build_model()
+        self.outputs = postprocessing.detections_to_bboxes(self.build_model())
+        self.outputs = tf.identity(self.outputs, name='outputs')
 
     def _block(self, inputs, filters):
         """A convolution block.
@@ -187,5 +189,5 @@ class YOLOv3:
                     detect3 = self._detection_layer(outputs, self.ANCHORS[:3])
                     detect3 = tf.identity(detect3, name='detect3')
 
-                detections = tf.concat([detect1, detect2, detect3], axis=1, name='outputs')
-                return detections
+                    detections = tf.concat([detect1, detect2, detect3], axis=1)
+                    return detections

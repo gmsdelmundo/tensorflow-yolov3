@@ -22,6 +22,8 @@ with tf.variable_scope('model'):
     print("Loading weights...")
     global_vars = tf.global_variables(scope='model')
     assign_ops = load_yolov3_weights(global_vars, config['WEIGHTS_PATH'])
+
+    [print(n.name) for n in tf.get_default_graph().as_graph_def().node]
     print("Done")
     print("=============================================")
 
@@ -79,7 +81,6 @@ def label_bboxes(original_image, bbox, class_id, score):
 
 with tf.Session() as sess:
     sess.run(assign_ops)
-    boxes = postprocessing.detections_to_bboxes(model.outputs)
 
     if args.input[-4:] == '.mp4' or args.input[-4:] == '.avi':
         video = cv2.VideoCapture(args.input)
@@ -94,7 +95,7 @@ with tf.Session() as sess:
                 break
 
             resized_frame = cv2.resize(frame, (config['IMAGE_SIZE'], config['IMAGE_SIZE']))
-            detected_bboxes = sess.run(boxes, feed_dict={model.inputs: np.expand_dims(resized_frame, axis=0)})
+            detected_bboxes = sess.run(model.outputs, feed_dict={model.inputs: np.expand_dims(resized_frame, axis=0)})
             filtered_bboxes = postprocessing.nms(detected_bboxes, conf_thresh=config['CONF_THRESH'],
                                                  iou_thresh=config['IOU_THRESH'])
 
@@ -111,7 +112,7 @@ with tf.Session() as sess:
     else:
         frame = cv2.imread(args.input)
         resized_frame = cv2.resize(frame, (config['IMAGE_SIZE'], config['IMAGE_SIZE']))
-        detected_bboxes = sess.run(boxes, feed_dict={model.inputs: np.expand_dims(resized_frame, axis=0)})
+        detected_bboxes = sess.run(model.outputs, feed_dict={model.inputs: np.expand_dims(resized_frame, axis=0)})
         filtered_bboxes = postprocessing.nms(detected_bboxes, conf_thresh=config['CONF_THRESH'],
                                              iou_thresh=config['IOU_THRESH'])
 
@@ -122,3 +123,4 @@ with tf.Session() as sess:
         print("Done")
         cv2.imshow('Result', frame)
         cv2.waitKey(0)
+
